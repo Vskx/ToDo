@@ -22,7 +22,9 @@ export default function Home() {
             ToDo
           </h1>
           <div className="">
+            <Link href="/dashboard">
             <Button className="animate__animated animate__fadeInRightBig">Start Planning</Button>
+            </Link>
           </div>
           
         </div>

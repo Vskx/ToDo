@@ -11,7 +11,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 interface TodoItem {
   id: number;
   text: string;
-  done: boolean;
 }
 
 export default function Dashboard() {
@@ -26,31 +25,10 @@ export default function Dashboard() {
     if (event.key === 'Enter' && todo.trim() !== '') {
       const newTodoItem: TodoItem = {
         id: Date.now(),
-        text: todo.trim(),
-        done: false
+        text: todo.trim()
       };
       setTodoItems([...todoItems, newTodoItem]);
       setTodo('');
-    }
-  };
-
-  const handleCheckboxChange = (id: number) => {
-    setTodoItems(todoItems.map(item => {
-      if (item.id === id) {
-        return {
-          ...item,
-          done: !item.done
-        };
-      }
-      return item;
-    }));
-  };
-
-  const handleCheckboxMove = (id: number) => {
-    const doneItemIndex = todoItems.findIndex(item => item.id === id);
-    if (doneItemIndex !== -1) {
-      const doneItem = todoItems.splice(doneItemIndex, 1)[0];
-      setTodoItems([...todoItems, doneItem]);
     }
   };
 
@@ -75,32 +53,17 @@ export default function Dashboard() {
               onKeyDown={handleKeyDown}
             />
             <h1 className="text-sm items-end text-muted-foreground my-10">
-              ToDo<span className="text-xs">ㅤx items</span>
+              ToDo<span className="text-xs"> {todoItems.length} items</span>
             </h1>
             <div className="h-0.5 bg-muted rounded-sm"></div>
             {todoItems.map((item) => (
-              <div 
-                key={item.id} 
-                className={`my-5 items-center space-x-2 flex ${item.done ? 'text-gray-400' : ''}`}
-                onClick={() => handleCheckboxMove(item.id)}
-              >
-                <Checkbox 
-                  id={`todo_${item.id}`} 
-                  checked={item.done} 
-                  onChange={() => handleCheckboxChange(item.id)} 
-                />
-                <label 
-                  htmlFor={`todo_${item.id}`} 
-                  className="text-sm font-medium leading-none cursor-pointer"
-                >
+              <div key={item.id} className="my-5 items-center space-x-2 flex">
+                <Checkbox id={`todo_${item.id}`} />
+                <label htmlFor={`todo_${item.id}`} className="text-sm font-medium leading-none">
                   {item.text}
                 </label>
               </div>
             ))}
-            <h1 className="text-sm items-end text-muted-foreground my-10">
-              Done<span className="text-xs">ㅤx items</span>
-            </h1>
-            <div className="h-0.5 bg-muted rounded-sm"></div>
           </div>
         </div>
       </section>
