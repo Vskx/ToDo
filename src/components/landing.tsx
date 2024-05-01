@@ -6,16 +6,16 @@ import { Button } from "@/components/ui/button"
 
 
 
-export default function Home() {
+export default function Landing() {
   return (
     <div>
-      <nav className="flex justify-between items-center my-10 mx-20  text-white">
+      <header className="flex justify-between items-center my-10 mx-20  text-white">
         <div className="flex items-center space-x-6">
           <Bookmark size={40} strokeWidth={1.90} className=" " />
           <h1 className="text-2xl">/</h1>
           <h1 className="text-xl">ToDo</h1>
         </div>
-      </nav>
+      </header>
       <header className="items-center mt-64">
         <div className="text-center">
           <h1 className="animate__animated animate__fadeInLeftBig text-5xl font-bold my-20">
