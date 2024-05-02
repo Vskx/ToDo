@@ -14,12 +14,18 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@types/express": "^4.17.21",
+    "@types/mysql": "^2.15.26",
+    "add": "^2.0.6",
     "animate.css": "^4.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "express": "^4.19.2",
     "lucide-react": "^0.373.0",
+    "mysql": "^2.18.1",
     "next": "14.2.3",
     "next-themes": "^0.3.0",
+    "nodemon": "^3.1.0",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.3.0",
@@ -34,5 +40,9 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
-  }
+  },
+  "description": "Hello! I present to you my project created in **NextJS**",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }

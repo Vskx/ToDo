@@ -1,9 +1,8 @@
 "use client"
 
 
-import 'animate.css';
-import { useState } from 'react';
-import { Bookmark, AlertCircle } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { Bookmark, AlertCircle, Trash2 } from "lucide-react";
 import "animate.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,19 +20,33 @@ interface TodoItem {
 }
 
 export default function Dashboard() {
-  const [todo, setTodo] = useState<string>('');
-  const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
-  const [error, setError] = useState<boolean>(false); // dodanie stanu dla błędu
+  const [todo, setTodo] = useState<string>(() => {
+    const savedTodo = localStorage.getItem('todo');
+    return savedTodo ? savedTodo : '';
+  });
+  const [todoItems, setTodoItems] = useState<TodoItem[]>(() => {
+    const savedTodoItems = localStorage.getItem('todoItems');
+    return savedTodoItems ? JSON.parse(savedTodoItems) : [];
+  });
+  const [error, setError] = useState<boolean>(false);
+
+  useEffect(() => {
+    localStorage.setItem('todo', todo);
+  }, [todo]);
+
+  useEffect(() => {
+    localStorage.setItem('todoItems', JSON.stringify(todoItems));
+  }, [todoItems]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(event.target.value);
-    setError(false); // zresetowanie stanu błędu
+    setError(false); 
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && todo.trim() !== '') {
       if (todo.trim().length > 20) {
-        setError(true); // ustawienie stanu błędu na true, jeśli tekst przekracza 20 znaków
+        setError(true); 
       } else {
         const newTodoItem: TodoItem = {
           id: Date.now(),
@@ -45,21 +58,25 @@ export default function Dashboard() {
     }
   };
 
+  const handleDeleteTodo = (id: number) => {
+    setTodoItems(todoItems.filter(item => item.id !== id));
+  };
+
   return (
     <div>
-      <header className="flex justify-between items-center my-10 mx-20  text-white">
+      <nav className="flex justify-between items-center my-10 mx-20  text-white">
         <div className="flex items-center space-x-6">
           <Bookmark size={40} strokeWidth={1.9} className=" " />
-          <h2 className="text-2xl">/</h2>
           <h2 className="text-xl">ToDo</h2>
         </div>
-      </header>
+      </nav>
       <section className="flex justify-center my-64">
         <div className="flex flex-col items-center">
           <div className="w-96 mb-10">
-          <label htmlFor="todoInput" className="sr-only">Create ToDo</label>
+            <label htmlFor="todoInput" className="sr-only">Create ToDo</label>
             <Input 
               type="text" 
+              id="todoInput" 
               placeholder="+   Create ToDo" 
               className="mt-4" 
               value={todo}
@@ -77,16 +94,19 @@ export default function Dashboard() {
             </Alert>
             </div>
             )}
-            <h1 className="text-sm items-end text-muted-foreground my-10">
+            <h3 className="text-sm items-end text-muted-foreground my-10">
               ToDo<span className="text-xs"> {todoItems.length} items</span>
-            </h1>
+            </h3>
             <div className="h-0.5 bg-muted rounded-sm"></div>
             {todoItems.map((item) => (
               <div key={item.id} className="my-5 items-center space-x-2 flex">
                 <Checkbox id={`todo_${item.id}`} />
-                <label htmlFor={`todo_${item.id}`} className="text-sm font-medium leading-none">
-                  {item.text}
-                </label>
+                <div className="flex items-center">
+                  <label htmlFor={`todo_${item.id}`} className="text-sm font-medium leading-none mr-2">
+                    {item.text}
+                  </label>
+                  <Trash2 className="cursor-pointer" size={16} onClick={() => handleDeleteTodo(item.id)} />
+                </div>
               </div>
             ))}
           </div>
