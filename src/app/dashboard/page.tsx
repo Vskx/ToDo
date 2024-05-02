@@ -21,12 +21,21 @@ interface TodoItem {
 
 export default function Dashboard() {
   const [todo, setTodo] = useState<string>(() => {
-    const savedTodo = localStorage.getItem('todo');
-    return savedTodo ? savedTodo : '';
+    if (typeof window !== 'undefined') {
+      const savedTodo = localStorage.getItem('todo');
+      return savedTodo ? savedTodo : '';
+    } else {
+      return '';
+    }
   });
+
   const [todoItems, setTodoItems] = useState<TodoItem[]>(() => {
-    const savedTodoItems = localStorage.getItem('todoItems');
-    return savedTodoItems ? JSON.parse(savedTodoItems) : [];
+    if (typeof window !== 'undefined') {
+      const savedTodoItems = localStorage.getItem('todoItems');
+      return savedTodoItems ? JSON.parse(savedTodoItems) : [];
+    } else {
+      return [];
+    }
   });
   const [error, setError] = useState<boolean>(false);
 
